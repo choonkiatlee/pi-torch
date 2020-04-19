@@ -30,7 +30,7 @@ jobs:
     - name: Pull image
       run: mkdir output; docker cp build:/pytorch/dist/. output/.
     - name: Upload pytorch artifact
-        uses: actions/upload-artifact@v1
-        with:
-          name: compiled_output
-          path: output
+      uses: actions/upload-artifact@v1
+      with:
+        name: compiled_output
+        path: output
