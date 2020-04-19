@@ -10,9 +10,9 @@ export MAX_JOBS=2 # For Github host
 export USE_CFLAGS=1
 export CFLAGS="-mfpu=neon -D__NEON__"
 
-apt-get update && apt-get install -y python3-cffi python3-numpy
+apt-get update && apt-get install -y python3-cffi python3-numpy libatlas-dev
 
-pip3 install cython wheel
+pip3 install cython wheel pyyaml pillow
 
 git clone --recursive https://github.com/pytorch/pytorch
 
