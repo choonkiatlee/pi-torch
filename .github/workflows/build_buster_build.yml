@@ -42,7 +42,7 @@ jobs:
       run: sudo apt-get update && sudo apt-get install qemu-user-static qemu binfmt-support
     - name: Pull Docker container
       run: |
-        docker run --name build choonkiatlee/pi-torch:build-intermediate qemu-arm-static /bin/bash cd pytorch; timeout -s SIGINT 18000 python3 setup.py bdist_wheel
+        docker run --name build choonkiatlee/pi-torch:build-intermediate qemu-arm-static /bin/bash cd /pytorch; timeout -s SIGINT 18000 python3 setup.py bdist_wheel
         docker attach build
     - name: Pull image
       run: mkdir output; docker cp build:/pytorch/dist/. output/.
