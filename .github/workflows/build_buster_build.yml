@@ -35,11 +35,9 @@ jobs:
         docker push choonkiatlee/pi-torch:build-intermediate
 
   build_2:
-
+    needs: build_1
     runs-on: ubuntu-latest
-
     steps:
-
     - name: Install QEMU
       run: sudo apt-get update && sudo apt-get install qemu-user-static qemu binfmt-support
     - name: Pull Docker container
