@@ -2,6 +2,10 @@
 export USE_CUDA=0
 export USE_CUDNN=0
 export USE_MKLDNN=0
+
+export USE_METAL=0
+export USE_NCCL=OFF
+
 export USE_NNPACK=1
 export USE_QNNPACK=1
 export USE_DISTRIBUTED=0
@@ -30,3 +34,10 @@ git submodule update --remote third_party/protobuf
 
 timeout -s SIGINT 18000 python3 setup.py bdist_wheel # 18,000 seconds = 5 hours = 300 minutes
 
+if [ $? -eq 124 ]; then
+  echo "Timeout Reached"
+  echo $?
+  exit 0
+fi
+
+# Should have an else if to return the timeout status code otherwise?
