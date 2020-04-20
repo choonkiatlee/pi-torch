@@ -11,7 +11,7 @@ on:
 
 jobs:
 
-  build:
+  build_1:
 
     runs-on: ubuntu-latest
 
@@ -20,12 +20,29 @@ jobs:
     - name: Install QEMU
       run: sudo apt-get update && sudo apt-get install qemu-user-static qemu binfmt-support
     - name: Create docker container
-      run: docker create --name build --rm choonkiatlee/raspbian:build qemu-arm-static /bin/bash /install_pytorch.sh
+      run: docker create --name build choonkiatlee/raspbian:build qemu-arm-static /bin/bash /install_pytorch.sh
     - name: Copy Script
       run: docker cp install_pytorch.sh build:/install_pytorch.sh
     - name: Build
       run: docker start build
     - name: Attach to log
+      run: docker attach build
+    - name: compile and push
+      run: docker commit build build-intermediate
+      run: docker tag build-intermediate choonkiatlee/pytorch-raspbian:build-intermediate
+      run: docker login --username=${{ secrets.DOCKER_USERNAME }} --password=${{ secrets.DOCKER_PASSWORD }}
+      run: docker push choonkiatlee/pytorch-raspbian:build-intermediate
+
+  build_2:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Install QEMU
+      run: sudo apt-get update && sudo apt-get install qemu-user-static qemu binfmt-support
+    - name: Pull Docker container
+      run: docker run --name build choonkiatlee/pytorch-raspbian:build-intermediate qemu-arm-static /bin/bash cd pytorch; timeout -s SIGINT 18000 python3 setup.py bdist_wheel
       run: docker attach build
     - name: Pull image
       run: mkdir output; docker cp build:/pytorch/dist/. output/.
