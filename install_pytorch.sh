@@ -32,7 +32,7 @@ git submodule update --init --recursive
 # Fix from: https://github.com/pytorch/pytorch/issues/22564
 git submodule update --remote third_party/protobuf
 
-timeout -s SIGINT 18000 python3 setup.py bdist_wheel # 18,000 seconds = 5 hours = 300 minutes
+timeout -s SIGINT 36000 python3 setup.py bdist_wheel # 36,000 seconds = 10 hours = 600 minutes
 
 if [ $? -eq 124 ]; then
   echo "Timeout Reached"
